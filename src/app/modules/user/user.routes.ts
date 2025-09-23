@@ -11,7 +11,7 @@ const route = Router();
 
 
 route.post(
-  "/create",
+  "/",
   validateRequest(UserValidation.createValidation),
   userController.createUserController
 );
@@ -23,13 +23,25 @@ route.put(
   userController.changePasswordController
 );
 
+route.get(
+  "/:id",
+  auth(Role.ADMIN),
+  userController.getSingleUserController
+);
+
+route.patch(
+  "/:id",
+  auth(Role.ADMIN),
+  userController.updateUserByAdminController
+);
+
 route.put(
   "/me",
-  auth(Role.USER || Role.ADMIN),
+  auth(),
   fileUploader.uploadProfileImage,
   parseBodyMiddleware,
   userController.updateUserController
 );
-route.get("/me", auth(Role.USER), userController.getMyProfileController);
+route.get("/me", auth(), userController.getMyProfileController);
 
 export const userRoutes = route;

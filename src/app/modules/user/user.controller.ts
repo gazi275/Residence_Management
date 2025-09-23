@@ -11,11 +11,25 @@ const createUserController = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, { statusCode: StatusCodes.CREATED, message: "Please check your email for verification", data: result, success: true })
 })
 
+const getSingleUserController = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params
+    const result = await userServices.getSingleUserFromDB(id)
+    sendResponse(res, { statusCode: StatusCodes.OK, message: "User retrieved successfully", data: result, success: true })
+})
+
 
 const changePasswordController = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.user
     const body = req.body as any
     const result = await userServices.changePasswordIntoDB(id, body)
+    sendResponse(res, { statusCode: StatusCodes.OK, message: "User updated successfully", data: result, success: true })
+})
+
+const updateUserByAdminController = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params
+    const body = req?.body as any
+    const image = req?.file as any
+    const result = await userServices.updateUserByAdminIntoDB(id, body, image)
     sendResponse(res, { statusCode: StatusCodes.OK, message: "User updated successfully", data: result, success: true })
 })
 
@@ -33,4 +47,4 @@ const getMyProfileController = catchAsync(async (req: Request, res: Response) =>
     sendResponse(res, { statusCode: StatusCodes.OK, message: "User profile retrieved successfully", data: result, success: true })
 })
 
-export const userController = { createUserController, updateUserController, changePasswordController, getMyProfileController }
+export const userController = { createUserController, getSingleUserController, updateUserController, changePasswordController, getMyProfileController, updateUserByAdminController }

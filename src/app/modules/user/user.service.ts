@@ -125,9 +125,63 @@ const getMyProfile = async (id: string) => {
   return result;
 };
 
+const updateUserByAdminIntoDB = async (id: string, payload: any, image: any) => {
+  const userImage = await getImageUrl(image);
+
+  const findUser = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+  if (!findUser) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "User not found");
+  }
+
+  const result = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      ...payload,
+      image: userImage ?? undefined,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+      role: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+  return result;
+};
+
+const getSingleUserFromDB = async (id: string) => {
+  const result = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+      role: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  return result;
+};
+
 export const userServices = {
   createUserIntoDB,
   updateUserIntoDB,
   changePasswordIntoDB,
   getMyProfile,
+  getSingleUserFromDB,
+  updateUserByAdminIntoDB
 };

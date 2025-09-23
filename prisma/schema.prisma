@@ -22,12 +22,6 @@ model User {
   password         String
   fcmToken         String?
   image            String?
-  latitude         Float?
-  longitude        Float?
-  location         String?
-  customerId       String?
-  connectAccountId String?
-  subscriptionPlan SubscriptionPlan?
   isVerified       Boolean           @default(false)
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
