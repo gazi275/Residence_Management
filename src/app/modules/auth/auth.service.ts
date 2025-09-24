@@ -7,7 +7,7 @@ import { OTPFn } from "../../helper/OTPFn";
 import OTPVerify from "../../helper/OTPVerify";
 import { StatusCodes } from "http-status-codes";
 import { stripe } from "../../../config/stripe";
-import { createStripeCustomerAcc } from "../../helper/createStripeCustomerAcc";
+
 
 const prisma = new PrismaClient();
 const logInFromDB = async (payload: {
@@ -85,7 +85,7 @@ const verifyOtp = async (payload: { email: string; otp: number }) => {
         updatedAt: true,
       },
     });
-    await createStripeCustomerAcc(updateUserInfo);
+    
     return updateUserInfo;
   }
 };
@@ -138,9 +138,9 @@ const socialLogin = async (payload: {
       email: true,
       image: true,
       role: true,
-      customerId: true,
+     
       status: true,
-      connectAccountId: true,
+    
       createdAt: true,
       updatedAt: true,
     },
@@ -168,14 +168,14 @@ const socialLogin = async (payload: {
         email: true,
         image: true,
         role: true,
-        customerId: true,
+   
         status: true,
-        connectAccountId: true,
+    
         createdAt: true,
         updatedAt: true,
       },
     });
-    await createStripeCustomerAcc(result);
+   
 
     const accessToken = jwtHelpers.generateToken(
       { id: result.id, email: result.email, role: result.role },

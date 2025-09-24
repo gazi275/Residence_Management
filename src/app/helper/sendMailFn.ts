@@ -10,7 +10,7 @@ export const sendEmailFn = async (
     },
   });
 
-  const adminEmail = "mahmudhasan.hb@gmail.com";
+  const adminEmail = "gaziazad270@gmail.com";
   const companyName = "EcomGrove";
 
   const transporter = nodemailer.createTransport({

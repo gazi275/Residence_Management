@@ -11,6 +11,11 @@ const createUserController = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, { statusCode: StatusCodes.CREATED, message: "Please check your email for verification", data: result, success: true })
 })
 
+const getAllUserController = catchAsync(async (req: Request, res: Response) => {
+    const result = await userServices.getAllUserFromDB()
+    sendResponse(res, { statusCode: StatusCodes.OK, message: "Users retrieved successfully", data: result, success: true })
+})
+
 const getSingleUserController = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params
     const result = await userServices.getSingleUserFromDB(id)
@@ -47,4 +52,10 @@ const getMyProfileController = catchAsync(async (req: Request, res: Response) =>
     sendResponse(res, { statusCode: StatusCodes.OK, message: "User profile retrieved successfully", data: result, success: true })
 })
 
-export const userController = { createUserController, getSingleUserController, updateUserController, changePasswordController, getMyProfileController, updateUserByAdminController }
+const deleteUserController = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params
+    const result = await userServices.deleteUserFromDB(id)
+    sendResponse(res, { statusCode: StatusCodes.OK, message: "User deleted successfully", data: result, success: true })
+})
+
+export const userController = { createUserController, getAllUserController, getSingleUserController, updateUserController, changePasswordController, getMyProfileController, updateUserByAdminController, deleteUserController }

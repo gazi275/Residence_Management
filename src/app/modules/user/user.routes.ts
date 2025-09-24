@@ -12,13 +12,20 @@ const route = Router();
 
 route.post(
   "/",
-  validateRequest(UserValidation.createValidation),
+
   userController.createUserController
 );
 
+route.get("/me", auth(), userController.getMyProfileController);
+
+route.get(
+  "/",
+  auth(Role.ADMIN,Role.SUPER_ADMIN),
+  userController.getAllUserController)
+
 route.put(
   "/change-password",
-  auth(Role.USER || Role.ADMIN),
+  auth(),
   validateRequest(UserValidation.changePasswordValidation),
   userController.changePasswordController
 );
@@ -42,6 +49,13 @@ route.put(
   parseBodyMiddleware,
   userController.updateUserController
 );
-route.get("/me", auth(), userController.getMyProfileController);
+
+route.delete(
+  "/:id",
+  auth(Role.ADMIN,Role.SUPER_ADMIN),
+  userController.deleteUserController
+);
+
+
 
 export const userRoutes = route;

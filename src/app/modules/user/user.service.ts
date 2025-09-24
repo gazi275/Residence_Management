@@ -44,6 +44,22 @@ const createUserIntoDB = async (payload: User) => {
   return result;
 };
 
+const getAllUserFromDB = async () => {
+  const result = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+      role: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  return result;
+};
+
 const changePasswordIntoDB = async (id: string, payload: any) => {
   const findUser = await prisma.user.findUnique({
     where: {
@@ -177,11 +193,31 @@ const getSingleUserFromDB = async (id: string) => {
   return result;
 };
 
+const deleteUserFromDB = async (id: string) => {
+  const findUser = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+  if (!findUser) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "User not found");
+  }
+  const result = await prisma.user.delete({
+    where: {
+      id,
+    },
+  });
+
+  return result;
+};
+
 export const userServices = {
   createUserIntoDB,
   updateUserIntoDB,
   changePasswordIntoDB,
   getMyProfile,
   getSingleUserFromDB,
-  updateUserByAdminIntoDB
+  updateUserByAdminIntoDB,
+  getAllUserFromDB,
+  deleteUserFromDB,
 };

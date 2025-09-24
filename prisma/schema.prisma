@@ -147,7 +147,8 @@ model Notifications {
 
 enum Role {
   USER
-  WORKER
+  CARETAKER
+  MANAGER
   ADMIN
   SUPER_ADMIN
 }
