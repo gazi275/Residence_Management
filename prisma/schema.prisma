@@ -92,6 +92,18 @@ enum appointmentsStatus {
   REJECTED
   COMPLETED
 }
+model News{
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  content   String
+  image     String?
+  video     String?
+  thumbnail String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("news")
+}
 
 model Report {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
