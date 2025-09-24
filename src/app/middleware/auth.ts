@@ -14,10 +14,10 @@ const auth = (...roles: string[]) => {
     try {
       const token = req.headers.authorization;
 
-      if (!token || !token.startsWith("Bearer ")) {
+      if (!token ) {
         throw new ApiError(StatusCodes.UNAUTHORIZED, "You are not authorized!");
       }
-      const accessToken = token.split("Bearer ")[1];      
+      const accessToken = token      
 
       const verifiedUser = jwtHelpers.verifyToken(accessToken) as JwtPayload
 
