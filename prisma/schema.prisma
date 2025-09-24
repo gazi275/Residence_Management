@@ -105,6 +105,24 @@ model News{
   @@map("news")
 }
 
+model Residences{
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  type   String
+  totalUnits Int
+  street    String
+  city      String
+  state     String
+  postalCode String
+  country   String
+  logo      String?
+  documents String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("residences")
+}
+
 model Report {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   userId    String   @db.ObjectId
