@@ -162,7 +162,7 @@ model Residences{
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   type   String
-  totalUnits Int
+  totalUnits String
   street    String
   city      String
   state     String
