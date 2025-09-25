@@ -25,6 +25,23 @@ const getAllIssueTypes = async (query: any) => {
     where: whereConditions,
     skip,
     take,
+    orderBy: {
+      createdAt: 'desc',
+    },
+    include: {
+      issueReports: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              image: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   return {
