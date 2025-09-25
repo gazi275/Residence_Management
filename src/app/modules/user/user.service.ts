@@ -89,38 +89,51 @@ const changePasswordIntoDB = async (id: string, payload: any) => {
   return result;
 };
 
-const updateUserIntoDB = async (id: string, payload: any, image: any) => {
-  const userImage = await getImageUrl(image);
+const updateUserIntoDB = async (id: string, payload: any, image?: any) => {
+    // Initialize userImage variable
+    let userImage;
 
-  const findUser = await prisma.user.findUnique({
-    where: {
-      id,
-    },
-  });
-  if (!findUser) {
-    throw new ApiError(StatusCodes.NOT_FOUND, "User not found");
-  }
+    // Check if an image is provided and get the URL if true
+    if (image) {
+        userImage = await getImageUrl(image);
+    }
 
-  const result = await prisma.user.update({
-    where: {
-      id,
-    },
-    data: {
-      ...payload,
-      image: userImage ?? undefined,
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      image: true,
-      role: true,
-      createdAt: true,
-      updatedAt: true,
-    },
-  });
-  return result;
+    // Find the existing user from the database
+    const findUser = await prisma.user.findUnique({
+        where: { id },
+    });
+
+    // If the user is not found, throw an error
+    if (!findUser) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "User not found");
+    }
+
+    // Prepare the data for the update, ensuring we only update fields that are provided
+    const updateData: any = { ...payload };
+
+    // Only set the image if a new one was uploaded
+    if (userImage) {
+        updateData.image = userImage;
+    }
+
+    // Update the user in the database with the provided data
+    const result = await prisma.user.update({
+        where: { id },
+        data: updateData,
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+            role: true,
+            createdAt: true,
+            updatedAt: true,
+        },
+    });
+
+    return result;
 };
+
 
 const getMyProfile = async (id: string) => {
   const result = await prisma.user.findUnique({
