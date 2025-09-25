@@ -87,6 +87,34 @@ const getAllResidencess = async (query: any) => {
   };
 };
 
+const joinResidences = async (id: string,userId:string) => {
+  const residences = await prisma.residences.findUnique({
+    where: {
+      id,
+    },
+  });
+  if (!residences) {
+    throw new ApiError(404, "Residences not found");
+  }
+  const user = await prisma.user.findUnique({
+    where: {
+      id:userId,
+    },
+  });
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const residenceUser = await prisma.residenceUser.create({
+    data: {
+      userId: userId,
+      residenceId: residenceId,
+    },
+  });
+
+  return residenceUser;
+};
+
 const getSingleResidences = async (id: string) => {
   const residences = await prisma.residences.findUnique({
     where: {
