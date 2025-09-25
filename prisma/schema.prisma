@@ -169,7 +169,7 @@ model Residences{
   postalCode String
   country   String
   logo      String?
-  documents String?
+  documents String[]
   code      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
