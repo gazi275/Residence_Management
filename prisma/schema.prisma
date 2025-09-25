@@ -35,6 +35,7 @@ model User {
   reports              Report[]        @relation("UserToReport")
   appointmentsAsUser         Appointment[] @relation("AppointmentUser")
   appointmentsAsConcernPeople Appointment[] @relation("AppointmentConcernPeople")
+  issueReports               IssueReport[] @relation("UserToIssueReport")
 }
 
 model Otp {
@@ -68,6 +69,57 @@ model EmergencyContact {
   updatedAt DateTime @updatedAt
 
   @@map("emergencyContacts")
+}
+
+model IssueType{
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  type     String
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  issueReports IssueReport[] @relation("IssueTypeToIssueReport")
+
+  @@map("issues")
+}
+
+model IssueReport {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  issueTypeId String   @db.ObjectId
+  issue       String
+  images      String[]
+  assignedTo  String?
+  status      issueStatus   @default(PENDING)
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  issueType   IssueType @relation("IssueTypeToIssueReport", fields: [issueTypeId], references: [id])
+  user        User     @relation("UserToIssueReport", fields: [userId], references: [id])
+
+  @@map("issueReports")
+}
+
+enum issueStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+  REJECTED
+}
+
+model scheduledProgram{
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  description String
+  date      DateTime
+  startTime   String
+  endTime     String
+  attachment String?
+  link      String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("scheduledPrograms")
 }
 
 model Appointment {
