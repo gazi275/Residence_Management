@@ -39,6 +39,14 @@ const getAllIssueTypes = async (query: any) => {
               image: true,
             },
           },
+          assignedUser: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              image: true,
+            },
+          },
         },
       },
     },
@@ -59,6 +67,28 @@ const getSingleIssueType = async (id: string) => {
   const issueType = await prisma.issueType.findUnique({
     where: {
       id,
+    },
+    include: {
+      issueReports: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              image: true,
+            },
+          },
+          assignedUser: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              image: true,
+            },
+          },
+        },
+      },
     },
   });
 

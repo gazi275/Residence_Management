@@ -36,6 +36,7 @@ model User {
   appointmentsAsUser         Appointment[] @relation("AppointmentUser")
   appointmentsAsConcernPeople Appointment[] @relation("AppointmentConcernPeople")
   issueReports               IssueReport[] @relation("UserToIssueReport")
+  assignedIssues             IssueReport[] @relation("AssignedToIssueReport")
 }
 
 model Otp {
@@ -88,14 +89,14 @@ model IssueReport {
   issueTypeId String   @db.ObjectId
   issue       String
   images      String[]
-  assignedTo  String?
+  assignedTo  String?   @db.ObjectId
   status      issueStatus   @default(PENDING)
   notes       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   issueType   IssueType @relation("IssueTypeToIssueReport", fields: [issueTypeId], references: [id])
-  user        User     @relation("UserToIssueReport", fields: [userId], references: [id])
-
+  user       User      @relation("UserToIssueReport", fields: [userId], references: [id])
+  assignedUser User?    @relation("AssignedToIssueReport", fields: [assignedTo], references: [id])
   @@map("issueReports")
 }
 
