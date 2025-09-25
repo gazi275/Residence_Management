@@ -65,6 +65,11 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec, swaggerUiOptions)
 );
+
+app.get("/v2/api-docs", (req, res) => {
+  res.json(swaggerSpec);
+});
+
 app.use(GlobalErrorHandler);
 
 app.use((req: Request, res: Response, next: NextFunction) => {

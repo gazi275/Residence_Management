@@ -53,6 +53,18 @@ const getSingleIssueType = async (id: string) => {
 };
 
 const updateIssueType = async (id: string, payload: Partial<IssueType>) => {
+  // First check if the record exists
+  const existingIssueType = await prisma.issueType.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!existingIssueType) {
+    throw new ApiError(404, "IssueType not found");
+  }
+
+  // Only update fields that are provided in payload
   const issueType = await prisma.issueType.update({
     where: {
       id,
@@ -71,7 +83,7 @@ const deleteIssueType = async (id: string) => {
   });
 
   if (!issueType) {
-    throw new ApiError(400, "IssueType not found");
+    throw new ApiError(404, "IssueType not found");
   }
 
   await prisma.issueType.delete({
