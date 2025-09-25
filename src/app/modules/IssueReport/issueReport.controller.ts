@@ -1,9 +1,15 @@
+import { get } from "http"
 import catchAsync from "../../../shared/catchAsync"
 import sendResponse from "../../middleware/sendResponse"
 import { IssueReportServices } from "./issueReport.service"
+import { getImageUrls } from "../../helper/uploadFile"
 
 const createIssueReport = catchAsync(async (req, res) => {
-  const issueReport = await IssueReportServices.createIssueReport(req.body)
+  const userId = req.user.id
+  const images = req?.files as Array<Express.MulterS3.File>
+  const imageUrls = await getImageUrls(images);
+
+  const issueReport = await IssueReportServices.createIssueReport({ ...req.body, userId, images: imageUrls })
 
   sendResponse(res, {
     statusCode: 200,

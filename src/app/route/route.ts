@@ -3,6 +3,9 @@ import { userRoutes } from "../modules/user/user.routes"
 import { authRoutes } from "../modules/auth/auth.routes"
 import { UploadRoutes } from "../modules/Upload/upload.route"
 import { ResidencesRoutes } from "../modules/Residences/residences.route"
+import path from "path"
+import { IssueTypeRoutes } from "../modules/IssueType/issueType.route"
+import { IssueReportRoutes } from "../modules/IssueReport/issueReport.route"
 
 const router = Router()
 const routes = [
@@ -21,6 +24,14 @@ const routes = [
     {
         path: "/residences",
         component: ResidencesRoutes
+    },
+    {
+        path: "/issue",
+        component: IssueTypeRoutes
+    },
+    {
+        path: "/issues-report",
+        component: IssueReportRoutes
     }
 ]
 
