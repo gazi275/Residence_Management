@@ -57,6 +57,15 @@ const getAllIssueReports = async (query: any) => {
           image: true,
         },
       },
+      assignedUser: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+          role: true,
+        },
+      },
     },
     orderBy: {
       createdAt: 'desc',
@@ -87,6 +96,15 @@ const getSingleIssueReport = async (id: string) => {
           name: true,
           email: true,
           image: true,
+        },
+      },
+      assignedUser: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+          role: true,
         },
       },
     },
