@@ -183,11 +183,14 @@ model Residences{
   @@map("residences")
 }
 
+
 model ResidenceUser {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   userId      String   @db.ObjectId
   residenceId String   @db.ObjectId
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  joinStatus  JoinStatus @default(PENDING)
 
   // Relations
   user        User     @relation(fields: [userId], references: [id],onDelete: Cascade)
@@ -282,4 +285,10 @@ enum SubscriptionPlan {
 enum SubscriptionStatus {
   ACTIVE
   CANCELLED
+}
+
+enum JoinStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

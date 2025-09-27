@@ -2,6 +2,7 @@ import catchAsync from "../../../shared/catchAsync"
 import sendResponse from "../../middleware/sendResponse"
 import { ResidencesServices } from "./residences.service"
 import { getFileUrl, getFileUrls } from "../../helper/uploadFile"
+import { JoinStatus } from "@prisma/client";
 
 const createResidences = catchAsync(async (req, res) => {
   let logo = null;
@@ -104,10 +105,81 @@ const deleteResidences = catchAsync(async (req, res) => {
   });
 });
 
+const joinResidences = catchAsync(async (req, res) => {
+  const { userId, residenceId } = req.body;
+  const residences = await ResidencesServices.joinResidences(residenceId, userId);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "User joined residence successfully",
+    data: residences,
+  });
+});
+
+const getPendingUsers = catchAsync(async (req, res) => {
+  const { residenceId } = req.params;
+  const pendingUsers = await ResidencesServices.getPendingUsers(residenceId, req.query);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Pending users retrieved successfully",
+    data: pendingUsers,
+  });
+});
+
+// Update ResidenceUser status (approve/reject)
+const updateResidenceUserStatus = catchAsync(async (req, res) => {
+  const { residenceUserId } = req.params;
+  const { status } = req.body;
+
+  // Validate status
+  if (!Object.values(JoinStatus).includes(status)) {
+    return sendResponse(res, {
+      statusCode: 400,
+      success: false,
+      message: "Invalid status. Must be PENDING, APPROVED, or REJECTED",
+    });
+  }
+
+  const updatedResidenceUser = await ResidencesServices.updateResidenceUserStatus(
+    residenceUserId,
+    status
+  );
+
+  const statusMessage = status === JoinStatus.APPROVED ? "approved" : 
+                       status === JoinStatus.REJECTED ? "rejected" : "updated";
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: `User request ${statusMessage} successfully`,
+    data: updatedResidenceUser,
+  });
+});
+
+// Get all users of a residence with filtering
+const getResidenceUsers = catchAsync(async (req, res) => {
+  const { residenceId } = req.params;
+  const residenceUsers = await ResidencesServices.getResidenceUsers(residenceId, req.query);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Residence users retrieved successfully",
+    data: residenceUsers,
+  });
+});
+
 export const ResidencesControllers = {
   createResidences,
   getAllResidencess,
   getSingleResidences,
   updateResidences,
   deleteResidences,
+  joinResidences,
+  getPendingUsers,
+  updateResidenceUserStatus,
+  getResidenceUsers,
 };

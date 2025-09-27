@@ -8,6 +8,10 @@ const router = express.Router();
 
 // Add file upload middleware for create and update
 router.post('/', auth(Role.ADMIN, Role.SUPER_ADMIN), fileUploader.uploadResidenceFiles, ResidencesControllers.createResidences);
+router.post('/join',  ResidencesControllers.joinResidences);
+router.get('/users/:id', auth(Role.ADMIN, Role.SUPER_ADMIN), ResidencesControllers.getResidenceUsers);
+router.get('/pending-users/:id', auth(Role.ADMIN, Role.SUPER_ADMIN), ResidencesControllers.getPendingUsers);
+router.patch('/update-user-status/:id', auth(Role.ADMIN, Role.SUPER_ADMIN), ResidencesControllers.updateResidenceUserStatus);
 router.get('/', ResidencesControllers.getAllResidencess);
 router.get('/:id', ResidencesControllers.getSingleResidences);
 router.patch('/:id', auth(Role.ADMIN, Role.SUPER_ADMIN), fileUploader.uploadResidenceFiles, ResidencesControllers.updateResidences);
