@@ -118,7 +118,7 @@ const joinResidences = catchAsync(async (req, res) => {
 });
 
 const getPendingUsers = catchAsync(async (req, res) => {
-  const { residenceId } = req.params;
+  const residenceId  = req.params.id;
   const pendingUsers = await ResidencesServices.getPendingUsers(residenceId, req.query);
 
   sendResponse(res, {
@@ -131,7 +131,7 @@ const getPendingUsers = catchAsync(async (req, res) => {
 
 // Update ResidenceUser status (approve/reject)
 const updateResidenceUserStatus = catchAsync(async (req, res) => {
-  const { residenceUserId } = req.params;
+  const residenceUserId = req.params.id;
   const { status } = req.body;
 
   // Validate status
@@ -161,7 +161,7 @@ const updateResidenceUserStatus = catchAsync(async (req, res) => {
 
 // Get all users of a residence with filtering
 const getResidenceUsers = catchAsync(async (req, res) => {
-  const { residenceId } = req.params;
+  const residenceId  = req.params.id;
   const residenceUsers = await ResidencesServices.getResidenceUsers(residenceId, req.query);
 
   sendResponse(res, {
