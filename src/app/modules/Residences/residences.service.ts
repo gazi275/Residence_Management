@@ -3,7 +3,30 @@ import { prisma } from "../../../utils/prisma";
 import ApiError from "../../error/ApiErrors"
 
 const createResidences = async (payload: Residences) => {
-  // Check if code already exists
+  // Validate required fields
+  if (!payload.userId) {
+    throw new ApiError(400, "User ID is required");
+  }
+  console.log(payload.userId);
+
+  // Validate required residence fields
+  const requiredFields = ['name', 'type', 'totalUnits', 'street', 'city', 'state', 'postalCode', 'country', 'code'];
+  const missingFields = requiredFields.filter(field => !payload[field as keyof typeof payload]);
+  
+  if (missingFields.length > 0) {
+    throw new ApiError(400, `Missing required fields: ${missingFields.join(', ')}`);
+  }
+
+  // Check if user exists first
+  const userExists = await prisma.user.findUnique({
+    where: { id: payload.userId }
+  });
+
+  if (!userExists) {
+    throw new ApiError(404, "User not found");
+  }
+
+  // Check if code already exists - but don't include userId in this check
   if (payload.code) {
     const existingResidence = await prisma.residences.findFirst({
       where: {
@@ -16,11 +39,29 @@ const createResidences = async (payload: Residences) => {
     }
   }
 
+  // Create residence with all required fields
   const residences = await prisma.residences.create({
-    data: payload,
+    data: {
+      userId: payload.userId,
+      name: payload.name as string,
+      type: payload.type as string,
+      totalUnits: payload.totalUnits as string,
+      street: payload.street as string,
+      city: payload.city as string,
+      state: payload.state as string,
+      postalCode: payload.postalCode as string,
+      country: payload.country as string,
+      code: payload.code as string,
+      logo: payload.logo || null,
+      documents: payload.documents || [],
+    },
+    
   });
+ 
+
   return residences;
 };
+
 
 const getAllResidencess = async (query: any) => {
   const { 
@@ -73,6 +114,9 @@ const getAllResidencess = async (query: any) => {
     take,
     orderBy: {
       createdAt: 'desc',
+    },
+    include: {
+      user: true,
     },
   });
 

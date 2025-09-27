@@ -3,8 +3,17 @@ import sendResponse from "../../middleware/sendResponse"
 import { ResidencesServices } from "./residences.service"
 import { getFileUrl, getFileUrls } from "../../helper/uploadFile"
 import { JoinStatus } from "@prisma/client";
+import ApiError from "../../error/ApiErrors";
 
 const createResidences = catchAsync(async (req, res) => {
+  const userId = req.user?.id;
+  console.log(userId);
+  
+  // Check if userId exists
+  if (!userId) {
+    throw new ApiError(401, "User not authenticated");
+  }
+
   let logo = null;
   let documents: string[] = [];
 
@@ -23,10 +32,19 @@ const createResidences = catchAsync(async (req, res) => {
     }
   }
 
+  // Validate required fields before calling service
+  const requiredFields = ['name', 'type', 'totalUnits', 'street', 'city', 'state', 'postalCode', 'country', 'code'];
+  const missingFields = requiredFields.filter(field => !req.body[field]);
+  
+  if (missingFields.length > 0) {
+    throw new ApiError(400, `Missing required fields: ${missingFields.join(', ')}`);
+  }
+
   const residences = await ResidencesServices.createResidences({
     ...req.body,
     logo,
-    documents
+    documents,
+    userId, // This will now definitely be a string
   });
 
   sendResponse(res, {
