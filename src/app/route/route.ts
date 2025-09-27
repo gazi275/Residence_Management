@@ -9,6 +9,8 @@ import { IssueReportRoutes } from "../modules/IssueReport/issueReport.route"
 import { NewsRoutes } from "../modules/News/news.route"
 import { AdminNewsRoutes } from "../modules/AdminNews/adminNews.route"
 import { PropertyContactRoutes } from "../modules/PropertyContact/propertyContact.route"
+import { EmergencyContactRoutes } from "../modules/EmergencyContact/emergencyContact.route"
+import { AppointmentRoutes } from "../modules/Appointment/appointment.route"
 
 const router = Router()
 const routes = [
@@ -47,6 +49,14 @@ const routes = [
     {
         path:"/property-contact",
         component:PropertyContactRoutes
+    },
+    {
+        path:"/emaergency-contact",
+        component:EmergencyContactRoutes
+    },
+    {
+        path:"/appointment",
+        component:AppointmentRoutes
     }
 ]
 
