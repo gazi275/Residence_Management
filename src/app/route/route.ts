@@ -8,6 +8,7 @@ import { IssueTypeRoutes } from "../modules/IssueType/issueType.route"
 import { IssueReportRoutes } from "../modules/IssueReport/issueReport.route"
 import { NewsRoutes } from "../modules/News/news.route"
 import { AdminNewsRoutes } from "../modules/AdminNews/adminNews.route"
+import { PropertyContactRoutes } from "../modules/PropertyContact/propertyContact.route"
 
 const router = Router()
 const routes = [
@@ -42,6 +43,10 @@ const routes = [
     {
         path:"/admin-news",
         component:AdminNewsRoutes
+    },
+    {
+        path:"/property-contact",
+        component:PropertyContactRoutes
     }
 ]
 

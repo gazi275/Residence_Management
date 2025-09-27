@@ -53,11 +53,11 @@ model Otp {
 }
 
 model PropertyContact {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   profession String
-  name      String
-  email     String
-  phone   String
+  name       String
+  email      String
+  phone      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
