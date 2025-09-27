@@ -6,6 +6,7 @@ import { ResidencesRoutes } from "../modules/Residences/residences.route"
 import path from "path"
 import { IssueTypeRoutes } from "../modules/IssueType/issueType.route"
 import { IssueReportRoutes } from "../modules/IssueReport/issueReport.route"
+import { NewsRoutes } from "../modules/News/news.route"
 
 const router = Router()
 const routes = [
@@ -32,6 +33,10 @@ const routes = [
     {
         path: "/issues-report",
         component: IssueReportRoutes
+    },
+    {
+        path:"/news",
+        component:NewsRoutes
     }
 ]
 

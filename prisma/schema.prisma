@@ -151,6 +151,8 @@ model News{
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String
   content   String
+  residenceId String   @db.ObjectId
+  residence   Residences @relation(fields: [residenceId], references: [id],onDelete: Cascade)
   image     String?
   video     String?
   thumbnail String?
@@ -176,6 +178,9 @@ model Residences{
 
   // Opposite relation field for ResidenceUser
   residenceUsers ResidenceUser[]
+
+  // Opposite relation field for News
+  news News[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
