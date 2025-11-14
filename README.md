@@ -431,13 +431,13 @@ This command will:
 npm run dev
 ```
 
-The server will start on `http://localhost:5000` (or your configured PORT)
+The server will start on `http://localhost:6006` (or your configured PORT)
 
 6. **Access API documentation**
 
 Open your browser and navigate to:
 ```
-http://localhost:5000/api-docs
+http://localhost:6006/api-docs
 ```
 
 ---
@@ -448,7 +448,7 @@ Create a `.env` file in the root directory with the following variables:
 
 ```env
 # Server Configuration
-PORT=5000
+PORT=6006
 NODE_ENV=development
 CLIENT_NAME="Residence Management"
 
